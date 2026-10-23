@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+const api='http://127.0.0.1:3001';
+assert.equal((await fetch(`${api}/me`)).status,401);
+assert.equal((await fetch(`${api}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'demo@example.com',password:'wrong'})})).status,401);
+const response=await fetch(`${api}/login`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'demo@example.com',password:'demo123'})});assert.equal(response.status,200);
+const {token}=await response.json();const headers={Authorization:`Bearer ${token}`};
+assert.equal((await fetch(`${api}/me`,{headers})).status,200);
+assert.equal((await fetch(`${api}/users`,{headers})).status,404);
+assert.equal((await fetch(`${api}/logout`,{method:'POST',headers})).status,204);
+assert.equal((await fetch(`${api}/me`,{headers})).status,401);
+console.log('Auth smoke: 7 assertions passed');

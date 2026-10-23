@@ -1,0 +1,6 @@
+import { cn } from '@/shared/lib/utils';
+export function Skeleton({className}:{className?:string}) {return <div aria-hidden="true" className={cn('skeleton',className)}/>;}
+export function PageSkeleton(){return <div className="page-skeleton" role="status" aria-label="Loading page"><Skeleton className="h-9 w-60"/><div className="panel p-8 space-y-6"><Skeleton className="h-12 w-full"/><Skeleton className="h-32 w-full"/><Skeleton className="h-12 w-3/4"/><Skeleton className="h-12 w-full"/></div></div>;}
+export function LoginSkeleton(){return <main className="login-page" role="status" aria-label="Checking session"><div className="login-panel"><Skeleton className="h-9 w-32 mx-auto"/><Skeleton className="h-12 w-full"/><Skeleton className="h-12 w-full"/><Skeleton className="h-12 w-full"/></div></main>;}
+export function TableSkeleton(){return <div role="status" aria-label="Loading exchange rates" className="space-y-5 py-5">{Array.from({length:7},(_,i)=><div className="grid grid-cols-4 gap-6" key={i}>{Array.from({length:4},(_,j)=><Skeleton className="h-6 w-full" key={j}/>)}</div>)}</div>;}
+export function ChartSkeleton(){return <div role="status" aria-label="Loading history"><Skeleton className="h-48 w-full"/></div>;}

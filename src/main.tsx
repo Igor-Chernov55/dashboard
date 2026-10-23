@@ -1,0 +1,15 @@
+import { PageSkeleton } from '@/shared/ui/skeleton';
+import { StrictMode,Suspense,lazy } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter,Routes,Route,Navigate } from 'react-router-dom';
+import { QueryClient,QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider,ProtectedRoute } from '@/features/auth/auth';
+import Layout from '@/app/layout';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import './styles.css';
+const Login=lazy(()=>import('@/pages/login'));const Rates=lazy(()=>import('@/pages/rates'));const Cards=lazy(()=>import('@/pages/cards'));
+const client=new QueryClient({defaultOptions:{queries:{retry:1,staleTime:300000}}});
+createRoot(document.getElementById('root')!).render(<StrictMode><QueryClientProvider client={client}><BrowserRouter><AuthProvider><Suspense fallback={<PageSkeleton/>}><Routes><Route path="/login" element={<Login/>}/><Route element={<ProtectedRoute/>}><Route element={<Layout/>}><Route path="/rates" element={<Rates/>}/><Route path="/cards" element={<Cards/>}/><Route path="*" element={<Navigate to="/rates" replace/>}/></Route></Route></Routes></Suspense></AuthProvider></BrowserRouter></QueryClientProvider></StrictMode>);
